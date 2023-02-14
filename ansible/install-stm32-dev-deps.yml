@@ -1,0 +1,116 @@
+---
+- name: Install STM32MP1 Development Deps
+  hosts: all
+  become: true
+  tasks:
+    - name: Apt update and upgrade
+      ansible.builtin.apt:
+        update_cache: true
+        upgrade: true
+        cache_valid_time: 600
+
+    - name: Install OpenEmbedded/Yocto Dependencies
+      ansible.builtin.apt:
+        pkg:
+          - gawk 
+          - wget 
+          - git 
+          - diffstat 
+          - unzip
+          - texinfo
+          - gcc-multilib
+          - build-essential
+          - chrpath
+          - socat
+          - cpio
+          - python3
+          - python3-pip
+          - python3-pexpect
+          - xz-utils
+          - debianutils
+          - iputils-ping
+          - python3-git
+          - python3-jinja2
+          - libegl1-mesa
+          - libsdl1.2-dev
+          - pylint
+          - bsdmainutils
+          - libssl-dev
+          - libgmp-dev
+          - libmpc-dev
+          - lz4
+          - zstd
+
+          - make
+          - xsltproc
+          - docbook-utils
+          - fop
+          - dblatex
+          - xmlto
+
+          - libmpc-dev
+          - libgmp-dev
+
+    - name: Install STM32MP1 Developer Package Dependencies
+      ansible.builtin.apt:
+        pkg:
+          - build-essential
+          - libncurses-dev
+          - libyaml-dev
+          - libssl-dev
+
+    - name: Install STM32MP1 Distribution Package Tools
+      ansible.builtin.apt:
+        pkg:
+          - repo
+
+          - coreutils
+          - bsdmainutils
+          - sed
+          - curl
+          - bc
+          - lrzsz
+          - corkscrew
+          - cvs
+          - subversion
+          - mercurial
+          - nfs-common
+          - nfs-kernel-server
+          - libarchive-zip-perl
+          - dos2unix
+          - texi2html
+          - diffstat
+          - libxml2-utils
+
+          - minicom
+          - net-tools
+
+    - name: Install STM32 Hal Dependencies
+      ansible.builtin.apt:
+        update_cache: true
+        pkg:
+          - gcc-arm-none-eabi
+          - unzip 
+          - libc6-i386 
+          - openjdk-8-jre
+          - cmake
+          - git
+          - build-essential
+          - stlink-tools
+
+- name: Install STM32 Development Tools
+  hosts: all
+  become: false
+  tasks:
+    - name: Unarchive STM32CubeMX Installer
+      ansible.builtin.unarchive:
+        src: /home/vagrant/Downloads/en.stm32cubemx-lin_v6-7-0.zip
+        dest: /home/vagrant/Downloads
+
+    - name: Install STM32CubeMX
+      ansible.builtin.command: ./SetupSTM32CubeMX-6.7.0 auto-install.xml
+      args:  
+        chdir: /home/vagrant/Downloads
+        creates: /home/vagrant/STM32CubeMX/STM32CubeMX
+
+        
