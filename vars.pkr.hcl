@@ -40,7 +40,7 @@ variable "iso_url" {
 
 variable "name" {
   type    = string
-  default = "jammy"
+  default = "stm32_tools"
 }
 
 variable "ram" {
@@ -60,5 +60,5 @@ variable "ssh_username" {
 
 variable "version" {
   type    = string
-  default = ""
+  default = "0.1.0"
 }

@@ -1,5 +1,5 @@
 Vagrant.configure("2") do |config|
-    config.vm.box = "./artifacts/qemu/jammy.box"
+    config.vm.box = "stm32_tools"
 
     config.nfs.verify_installed = false
     config.vm.synced_folder '.', '/vagrant', disabled: true

@@ -38,7 +38,7 @@ source "qemu" "jammy" {
   iso_checksum           = var.iso_checksum
   iso_url                = var.iso_url
   net_device             = "virtio-net"
-  output_directory       = "artifacts/qemu/${var.name}${var.version}.qcow2"
+  output_directory       = "artifacts/qemu/${var.name}_${var.version}.qcow2"
   qemu_binary            = "/usr/bin/qemu-system-x86_64"
   qemuargs               = [["-m", "${var.ram}M"], ["-smp", "${var.cpu}"]]
   shutdown_command       = "echo '${var.ssh_password}' | sudo -S shutdown -P now"
@@ -100,9 +100,18 @@ build {
   }
 
   post-processor "vagrant" {
-    keep_input_artifact = true
+    keep_input_artifact = false
     provider_override   = "libvirt"
-    output              = "artifacts/qemu/${var.name}${var.version}.box"
-  } 
+    output              = "artifacts/qemu/${var.name}_${var.version}.box"
+  }
+
+  post-processor "artifice" {
+    files = ["artifacts/qemu/${var.name}_${var.version}.box"]
+  }
+
+  post-processor "checksum" {
+    checksum_types = ["sha1", "sha256"]
+    output = "artifacts/qemu/${var.name}_${var.version}_{{.ChecksumType}}.checksum"
+  }
 
 }
